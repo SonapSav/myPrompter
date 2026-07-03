@@ -1,0 +1,7 @@
+# Local dev tooling (not part of the app)
+.claude/
+
+# OS junk
+Thumbs.db
+.DS_Store
+Desktop.ini

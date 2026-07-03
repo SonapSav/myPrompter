@@ -1,0 +1,130 @@
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+<meta name="theme-color" content="#0b0b0d" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="myPrompter" />
+<title>myPrompter</title>
+
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="icons/icon.svg" />
+<link rel="stylesheet" href="css/styles.css" />
+
+<!-- ============ EDITOR SCREEN ============ -->
+<main id="editor" class="screen">
+  <header class="topbar">
+    <h1 class="brand">my<span>Prompter</span></h1>
+    <div class="topbar-actions">
+      <button id="btnSettings" class="icon-btn" title="Settings" aria-label="Settings">⚙</button>
+    </div>
+  </header>
+
+  <section class="editor-body">
+    <div class="editor-main">
+      <input id="scriptName" class="script-name" type="text" placeholder="Untitled script" autocomplete="off" />
+      <textarea id="scriptText" class="script-text" placeholder="Paste or type your script here…&#10;&#10;Tip: blank lines and long paragraphs scroll just fine."></textarea>
+      <div class="editor-toolbar">
+        <button id="btnStart" class="btn btn-primary">▶ Start prompting</button>
+        <button id="btnSave" class="btn">Save</button>
+        <button id="btnNew" class="btn">New</button>
+        <label class="btn btn-file">Import .txt<input id="fileImport" type="file" accept=".txt,text/plain" hidden /></label>
+        <span id="editorHint" class="hint"></span>
+      </div>
+    </div>
+
+    <aside class="library" id="libraryPanel">
+      <div class="library-head">
+        <h2>Library</h2>
+        <div class="library-head-actions">
+          <button id="btnExportAll" class="mini-btn" title="Back up all scripts to a file">Backup</button>
+          <label class="mini-btn" title="Restore scripts from a backup file">Restore<input id="fileRestore" type="file" accept=".json,application/json" hidden /></label>
+        </div>
+      </div>
+      <ul id="libraryList" class="library-list"></ul>
+    </aside>
+  </section>
+</main>
+
+<!-- ============ SETTINGS PANEL ============ -->
+<div id="settingsPanel" class="panel" hidden>
+  <div class="panel-inner">
+    <div class="panel-head">
+      <h2>Settings</h2>
+      <button id="btnCloseSettings" class="icon-btn" aria-label="Close">✕</button>
+    </div>
+
+    <div class="panel-scroll">
+      <div class="field">
+        <label for="setSpeed">Scroll speed <output id="outSpeed"></output></label>
+        <input id="setSpeed" type="range" min="1" max="100" step="1" />
+      </div>
+      <div class="field">
+        <label for="setFont">Font size <output id="outFont"></output></label>
+        <input id="setFont" type="range" min="24" max="160" step="2" />
+      </div>
+      <div class="field">
+        <label for="setLine">Line spacing <output id="outLine"></output></label>
+        <input id="setLine" type="range" min="100" max="220" step="5" />
+      </div>
+      <div class="field">
+        <label for="setMargin">Side margin <output id="outMargin"></output></label>
+        <input id="setMargin" type="range" min="0" max="30" step="1" />
+      </div>
+
+      <div class="field field-row">
+        <span>Mirror horizontally <em>(beam-splitter rig)</em></span>
+        <label class="switch"><input id="setMirrorH" type="checkbox" /><span class="slider"></span></label>
+      </div>
+      <div class="field field-row">
+        <span>Flip vertically</span>
+        <label class="switch"><input id="setMirrorV" type="checkbox" /><span class="slider"></span></label>
+      </div>
+      <div class="field field-row">
+        <span>Countdown before start</span>
+        <label class="switch"><input id="setCountdown" type="checkbox" /><span class="slider"></span></label>
+      </div>
+      <div class="field field-row">
+        <span>Keep screen awake</span>
+        <label class="switch"><input id="setWake" type="checkbox" /><span class="slider"></span></label>
+      </div>
+      <div class="field field-row">
+        <span>Reading guide line</span>
+        <label class="switch"><input id="setGuide" type="checkbox" /><span class="slider"></span></label>
+      </div>
+
+      <h3 class="panel-subhead">Remote &amp; Bluetooth controls</h3>
+      <p class="panel-note">Most Bluetooth teleprompter pedals act as a keyboard. Tap <b>Assign</b>, then press the button on your remote to bind it.</p>
+      <div id="bindingList" class="bindings"></div>
+      <button id="btnResetBindings" class="mini-btn">Reset to defaults</button>
+
+      <p class="panel-version" id="appVersion"></p>
+    </div>
+  </div>
+</div>
+
+<!-- ============ PROMPTER SCREEN ============ -->
+<div id="prompter" class="prompter" hidden>
+  <div id="stage" class="stage">
+    <div id="mirror" class="mirror">
+      <div id="script" class="script"></div>
+    </div>
+    <div id="guide" class="guide" hidden></div>
+    <div id="countdown" class="countdown" hidden></div>
+  </div>
+
+  <div id="controls" class="controls">
+    <button id="pcExit" class="pc-btn" title="Exit (Esc)">✕</button>
+    <button id="pcRestart" class="pc-btn" title="Restart">⟲</button>
+    <button id="pcSlower" class="pc-btn" title="Slower">−</button>
+    <button id="pcPlay" class="pc-btn pc-play" title="Play / Pause">▶</button>
+    <button id="pcFaster" class="pc-btn" title="Faster">+</button>
+    <span class="pc-speed">Speed <b id="pcSpeedVal"></b></span>
+  </div>
+</div>
+
+<script src="js/settings.js"></script>
+<script src="js/library.js"></script>
+<script src="js/scroller.js"></script>
+<script src="js/controls.js"></script>
+<script src="js/app.js"></script>
