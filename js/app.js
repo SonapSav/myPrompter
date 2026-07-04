@@ -2,7 +2,7 @@
 (function () {
   "use strict";
 
-  var VERSION = "0.3.1";
+  var VERSION = "0.4.0";
   var S = window.Settings.current;
 
   // ---- element refs ----

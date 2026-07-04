@@ -31,6 +31,21 @@
         <label class="btn btn-file">Import .txt<input id="fileImport" type="file" accept=".txt,text/plain" hidden /></label>
         <span id="editorHint" class="hint"></span>
       </div>
+
+      <details class="cheatsheet">
+        <summary>Delivery cues — color parts of your script</summary>
+        <div class="cheatsheet-body">
+          <p>Wrap words in labeled brackets to color them on the prompter:</p>
+          <ul>
+            <li><code>[emphasis: text]</code> → <span class="mk mk-emphasis">say it strong</span></li>
+            <li><code>[soft: text]</code> → <span class="mk mk-soft">lower your voice</span></li>
+            <li><code>[slow: text]</code> → <span class="mk mk-slow">slow it down</span></li>
+            <li><code>[fast: text]</code> → <span class="mk mk-fast">pick up the pace</span></li>
+            <li><code>[pause]</code> → <span class="cue cue-pause">pause</span> &nbsp; <code>[breathe]</code> → <span class="cue cue-breathe">breathe</span> <em>(silent cues — not spoken)</em></li>
+          </ul>
+          <p class="cheatsheet-note">Anything else in brackets (like <code>[1]</code>) is left untouched.</p>
+        </div>
+      </details>
     </div>
 
     <aside class="library" id="libraryPanel">
@@ -131,6 +146,7 @@
 
 <script src="js/settings.js"></script>
 <script src="js/library.js"></script>
+<script src="js/markup.js"></script>
 <script src="js/scroller.js"></script>
 <script src="js/controls.js"></script>
 <script src="js/app.js"></script>

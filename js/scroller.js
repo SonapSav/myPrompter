@@ -38,7 +38,12 @@
   }
 
   function setContent(text, style) {
-    script.textContent = text && text.length ? text : " ";
+    var hasText = text && text.trim().length;
+    if (window.Markup) {
+      script.innerHTML = hasText ? window.Markup.render(text) : " ";
+    } else {
+      script.textContent = hasText ? text : " ";
+    }
     script.style.fontSize = style.fontSize + "px";
     script.style.lineHeight = (style.lineHeight / 100);
     script.style.paddingLeft = style.margin + "%";

@@ -1,11 +1,12 @@
 /* service-worker.js — offline app shell caching */
-var CACHE = "myprompter-v0.3.1";
+var CACHE = "myprompter-v0.4.0";
 var ASSETS = [
   "./",
   "./index.html",
   "./css/styles.css",
   "./js/settings.js",
   "./js/library.js",
+  "./js/markup.js",
   "./js/scroller.js",
   "./js/controls.js",
   "./js/app.js",

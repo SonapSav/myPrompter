@@ -186,6 +186,39 @@ html, body {
 .pc-speed { color: var(--muted); font-size: 13px; padding: 0 8px; white-space: nowrap; }
 .pc-speed b { color: var(--text); }
 
+/* ---------- Delivery-cue markup ---------- */
+/* Colors chosen for readability on the black prompter background.
+   Sizes use em so cues scale with the prompter font size. */
+.mk-emphasis { color: #ffcc33; font-weight: 800; }
+.mk-soft { color: #8fbcff; font-style: italic; opacity: 0.82; }
+.mk-slow { color: #ff9f45; }
+.mk-fast { color: #ff6ec7; }
+
+.cue {
+  display: inline-block; vertical-align: middle; margin: 0 0.15em;
+  font-size: 0.5em; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 0.2em 0.6em; border-radius: 0.7em; line-height: 1.4;
+}
+.cue-pause { color: #46d17f; background: rgba(70,209,127,0.16); border: 1px solid rgba(70,209,127,0.5); }
+.cue-breathe { color: #33d6c4; background: rgba(51,214,196,0.16); border: 1px solid rgba(51,214,196,0.5); }
+
+/* Cheat sheet in the editor */
+.cheatsheet {
+  background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 12px 14px; font-size: 14px;
+}
+.cheatsheet summary { cursor: pointer; color: var(--muted); font-weight: 600; }
+.cheatsheet summary:hover { color: var(--text); }
+.cheatsheet-body { margin-top: 10px; color: var(--muted); }
+.cheatsheet-body p { margin: 0 0 8px; }
+.cheatsheet-body ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; }
+.cheatsheet-body code {
+  font-family: ui-monospace, monospace; font-size: 12px; color: var(--text);
+  background: var(--bg); padding: 2px 6px; border-radius: 6px;
+}
+.cheatsheet-body .cue { font-size: 11px; }
+.cheatsheet-note { margin-top: 10px !important; font-size: 12px; }
+
 /* ---------- Mobile ---------- */
 @media (max-width: 760px) {
   .editor-body { grid-template-columns: 1fr; }
