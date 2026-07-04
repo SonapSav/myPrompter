@@ -2,7 +2,7 @@
 (function () {
   "use strict";
 
-  var VERSION = "0.1.0";
+  var VERSION = "0.2.0";
   var S = window.Settings.current;
 
   // ---- element refs ----
@@ -329,6 +329,12 @@
     updatePlayIcon();
     scheduleFade();
   }
+  // Seek forward/back by ~a fifth of the screen per press; hold to repeat.
+  function seek(dir) {
+    var step = Math.max(80, Math.round(stage.clientHeight * 0.2));
+    window.Scroller.nudge(dir * step);
+    scheduleFade();
+  }
 
   window.Scroller.onEnd(function () { updatePlayIcon(); controls.classList.remove("faded"); });
 
@@ -337,6 +343,8 @@
   $("pcFaster").addEventListener("click", function () { nudgeSpeed(2); });
   $("pcSlower").addEventListener("click", function () { nudgeSpeed(-2); });
   $("pcRestart").addEventListener("click", restartScroll);
+  $("pcBack").addEventListener("click", function () { seek(-1); });
+  $("pcForward").addEventListener("click", function () { seek(1); });
   $("pcExit").addEventListener("click", exitPrompter);
   stage.addEventListener("click", scheduleFade);
 
@@ -344,6 +352,8 @@
   window.Controls.register("playPause", togglePlay);
   window.Controls.register("faster", function () { nudgeSpeed(2); });
   window.Controls.register("slower", function () { nudgeSpeed(-2); });
+  window.Controls.register("seekBack", function () { seek(-1); });
+  window.Controls.register("seekForward", function () { seek(1); });
   window.Controls.register("restart", restartScroll);
   window.Controls.register("exit", exitPrompter);
 

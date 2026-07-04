@@ -18,6 +18,8 @@
       playPause: "Space",
       faster: "ArrowUp",
       slower: "ArrowDown",
+      seekBack: "ArrowLeft",
+      seekForward: "ArrowRight",
       restart: "KeyR",
       exit: "Escape"
     }
@@ -28,6 +30,8 @@
     ["playPause", "Play / Pause"],
     ["faster", "Faster"],
     ["slower", "Slower"],
+    ["seekBack", "Jump back"],
+    ["seekForward", "Jump forward"],
     ["restart", "Restart"],
     ["exit", "Exit prompter"]
   ];

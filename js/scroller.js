@@ -95,6 +95,14 @@
     applyTransform();
   }
 
+  // Seek by a pixel delta (positive = forward/down, negative = back/up).
+  // Works whether playing or paused; playback continues from the new spot.
+  function nudge(delta) {
+    measure();
+    offset = Math.min(maxOffset, Math.max(0, offset + delta));
+    applyTransform();
+  }
+
   function isRunning() { return running; }
 
   window.Scroller = {
@@ -107,6 +115,7 @@
     stop: stop,
     toggle: toggle,
     restart: restart,
+    nudge: nudge,
     isRunning: isRunning,
     onEnd: function (cb) { onEndCb = cb; }
   };
