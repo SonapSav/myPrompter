@@ -97,6 +97,8 @@ html, body {
 .library-item:hover { border-color: var(--accent); }
 .library-item .li-name { flex: 1; font-weight: 600; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .library-item .li-date { color: var(--muted); font-size: 11px; }
+.library-item .li-dl { background: none; border: none; color: var(--muted); font-size: 16px; font-weight: 700; cursor: pointer; padding: 2px 4px; }
+.library-item .li-dl:hover { color: var(--accent); }
 .library-item .li-del { background: none; border: none; color: var(--muted); font-size: 16px; cursor: pointer; padding: 2px 4px; }
 .library-item .li-del:hover { color: var(--danger); }
 .library-empty { color: var(--muted); font-size: 13px; text-align: center; padding: 20px 8px; }

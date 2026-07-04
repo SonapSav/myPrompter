@@ -2,7 +2,7 @@
 (function () {
   "use strict";
 
-  var VERSION = "0.4.0";
+  var VERSION = "0.5.0";
   var S = window.Settings.current;
 
   // ---- element refs ----
@@ -62,9 +62,19 @@
         }
       });
 
+      var dl = document.createElement("button");
+      dl.className = "li-dl";
+      dl.textContent = "↓";
+      dl.title = "Download as .txt";
+      dl.addEventListener("click", function (ev) {
+        ev.stopPropagation();
+        downloadBlob(safeFileName(s.name, ".txt"), s.text, "text/plain");
+      });
+
       li.addEventListener("click", function () { loadScript(s.id); });
       li.appendChild(name);
       li.appendChild(date);
+      li.appendChild(dl);
       li.appendChild(del);
       libraryList.appendChild(li);
     });
@@ -111,14 +121,33 @@
     reader.readAsText(file);
   }
 
-  function backupAll() {
-    var data = JSON.stringify({ app: "myPrompter", version: VERSION, scripts: window.Library.readAll() }, null, 2);
-    var blob = new Blob([data], { type: "application/json" });
+  function downloadBlob(filename, content, mime) {
+    var blob = new Blob([content], { type: mime });
     var a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
-    a.download = "myprompter-backup.json";
+    a.download = filename;
     a.click();
     URL.revokeObjectURL(a.href);
+  }
+
+  // Turn a script name into a safe file name (strip characters illegal on
+  // Windows/macOS/Android filesystems).
+  function safeFileName(name, ext) {
+    var base = (name || "script").replace(/[\\/:*?"<>|]+/g, "_").trim().slice(0, 80).trim();
+    return (base || "script") + ext;
+  }
+
+  function backupAll() {
+    var data = JSON.stringify({ app: "myPrompter", version: VERSION, scripts: window.Library.readAll() }, null, 2);
+    downloadBlob("myprompter-backup.json", data, "application/json");
+  }
+
+  // Download whatever is in the editor right now as a .txt (no save needed).
+  function exportCurrentTxt() {
+    var text = scriptText.value;
+    if (!text.trim()) { setHint("Nothing to export."); return; }
+    downloadBlob(safeFileName(scriptName.value, ".txt"), text, "text/plain");
+    setHint("Downloaded .txt");
   }
 
   function restoreAll(file) {
@@ -386,6 +415,7 @@
   $("btnSave").addEventListener("click", saveScript);
   $("btnNew").addEventListener("click", newScript);
   $("fileImport").addEventListener("change", function (e) { if (e.target.files[0]) importTxt(e.target.files[0]); e.target.value = ""; });
+  $("btnExportTxt").addEventListener("click", exportCurrentTxt);
   $("btnExportAll").addEventListener("click", backupAll);
   $("fileRestore").addEventListener("change", function (e) { if (e.target.files[0]) restoreAll(e.target.files[0]); e.target.value = ""; });
 
