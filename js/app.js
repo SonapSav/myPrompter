@@ -2,7 +2,7 @@
 (function () {
   "use strict";
 
-  var VERSION = "0.3.0";
+  var VERSION = "0.3.1";
   var S = window.Settings.current;
 
   // ---- element refs ----
@@ -219,6 +219,7 @@
 
   var wakeLock = null;
   var fadeTimer = null;
+  var promptStartAt = 0; // timestamp so the starting tap can't reveal controls
 
   window.Scroller.init({ stage: stage, mirror: $("mirror"), script: $("script") });
 
@@ -271,6 +272,8 @@
   function startPrompter() {
     var text = scriptText.value;
     if (!text.trim()) { setHint("Write or load a script first."); return; }
+
+    promptStartAt = performance.now();
 
     window.Scroller.setContent(text, {
       fontSize: S.fontSize, lineHeight: S.lineHeight, margin: S.margin
@@ -362,7 +365,12 @@
   $("pcBack").addEventListener("click", function () { seek(-1); });
   $("pcForward").addEventListener("click", function () { seek(1); });
   $("pcExit").addEventListener("click", exitPrompter);
-  stage.addEventListener("click", scheduleFade);
+  // Reveal controls on a deliberate tap — but ignore the tap-through from the
+  // "Start" gesture (on touch it lands on the stage the instant it appears).
+  stage.addEventListener("click", function () {
+    if (performance.now() - promptStartAt < 700) return;
+    scheduleFade();
+  });
 
   // Remote / Bluetooth actions (keyboard-driven)
   window.Controls.register("playPause", togglePlay);
