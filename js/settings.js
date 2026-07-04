@@ -14,6 +14,7 @@
     countdown: true,
     keepAwake: true,
     guide: true,
+    hideControls: false,
     bindings: {
       playPause: "Space",
       faster: "ArrowUp",

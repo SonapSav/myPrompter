@@ -2,7 +2,7 @@
 (function () {
   "use strict";
 
-  var VERSION = "0.2.0";
+  var VERSION = "0.3.0";
   var S = window.Settings.current;
 
   // ---- element refs ----
@@ -225,12 +225,28 @@
   function updateSpeedLabel() { pcSpeedVal.textContent = S.speed; }
   function updatePlayIcon() { pcPlay.textContent = window.Scroller.isRunning() ? "⏸" : "▶"; }
 
+  // Reveal the control panel, then auto-hide it.
+  // Hidden-controls mode: always hide after 3s (even paused).
+  // Normal mode: hide after 2.5s only while scrolling.
   function scheduleFade() {
     controls.classList.remove("faded");
     clearTimeout(fadeTimer);
+    var delay = S.hideControls ? 3000 : 2500;
     fadeTimer = setTimeout(function () {
-      if (window.Scroller.isRunning()) controls.classList.add("faded");
-    }, 2500);
+      if (S.hideControls || window.Scroller.isRunning()) controls.classList.add("faded");
+    }, delay);
+  }
+
+  function hideControlsNow() {
+    clearTimeout(fadeTimer);
+    controls.classList.add("faded");
+  }
+
+  // At prompter start / scroll begin: hide straight away in hidden-controls
+  // mode so nothing obstructs the view; otherwise show with the usual fade.
+  function initControlsForPlay() {
+    if (S.hideControls) hideControlsNow();
+    else scheduleFade();
   }
 
   async function requestWake() {
@@ -270,7 +286,7 @@
     window.Controls.setEnabled(true);
     enterFullscreen();
     requestWake();
-    scheduleFade();
+    initControlsForPlay();
 
     if (S.countdown) runCountdown(3, beginScroll);
     else beginScroll();
@@ -279,7 +295,7 @@
   function beginScroll() {
     window.Scroller.play();
     updatePlayIcon();
-    scheduleFade();
+    initControlsForPlay();
   }
 
   function runCountdown(from, done) {
@@ -336,7 +352,7 @@
     scheduleFade();
   }
 
-  window.Scroller.onEnd(function () { updatePlayIcon(); controls.classList.remove("faded"); });
+  window.Scroller.onEnd(function () { updatePlayIcon(); scheduleFade(); });
 
   // Prompter button + tap wiring
   pcPlay.addEventListener("click", togglePlay);
@@ -382,6 +398,7 @@
   bindSetting("setCountdown", "countdown", { checkbox: true });
   bindSetting("setWake", "keepAwake", { checkbox: true });
   bindSetting("setGuide", "guide", { checkbox: true });
+  bindSetting("setHideControls", "hideControls", { checkbox: true });
 
   $("appVersion").textContent = "myPrompter v" + VERSION;
 
