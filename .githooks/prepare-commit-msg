@@ -1,0 +1,33 @@
+#!/bin/sh
+# prepare-commit-msg — enforce the project's commit-authorship standard.
+#
+# Every commit (whoever runs it) gets the co-author trailer appended
+# automatically if it is not already present:
+#
+#   Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>
+#
+# The author identity (Panos Vasilopoulos <sonap.sav@gmail.com>) is pinned via
+# the repo-local git config (user.name / user.email), not here.
+#
+# Enabled through core.hooksPath=.githooks (set locally). If you clone fresh,
+# run:  git config --local core.hooksPath .githooks
+
+COMMIT_MSG_FILE="$1"
+COMMIT_SOURCE="$2"
+
+TRAILER="Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
+MARKER="Co-Authored-By: Claude Opus 4.8"
+
+# Leave auto-generated merge/squash messages untouched.
+case "$COMMIT_SOURCE" in
+  merge|squash) exit 0 ;;
+esac
+
+# Don't add a duplicate trailer (e.g. on --amend or an already-tagged message).
+if grep -qiF "$MARKER" "$COMMIT_MSG_FILE"; then
+  exit 0
+fi
+
+# Append the trailer, guaranteeing a blank line before it so git recognises it
+# as a trailer block rather than part of the body.
+printf '\n%s\n' "$TRAILER" >> "$COMMIT_MSG_FILE"

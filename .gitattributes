@@ -1,0 +1,5 @@
+# Git hooks are shell scripts — they must keep LF endings to stay runnable,
+# even when checked out on Windows (where autocrlf would otherwise add CRLF
+# and break the #!/bin/sh shebang).
+.githooks/** text eol=lf
+*.sh text eol=lf

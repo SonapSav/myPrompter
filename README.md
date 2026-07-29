@@ -18,8 +18,8 @@ Because it's a PWA, open it through a local web server (not `file://`) so the se
 
 ```bash
 # from the project folder — any static server works:
-python -m http.server 8080
-#   then visit  http://localhost:8080
+python -m http.server 3015
+#   then visit  http://localhost:3015
 ```
 
 ## Publish to GitHub Pages
